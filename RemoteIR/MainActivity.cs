@@ -83,22 +83,6 @@ namespace remoteir
             {
                 mCIR.Transmit(carrier_freq, marray);
             }
-                
-#if false
-            //
-            { //Power on
-                Collection<int> mcoll = new Collection<int>();
-                marray = new int[cmdpc_on.Length];
-                foreach (int it in cmdpc_on)
-                {
-                    mcoll.Add(it * 1000000 / 38000);
-                }
-                mcoll.CopyTo(marray, 0);
-
-                mCIR.Transmit(38000, marray);
-            }
-            
-#endif 
         }
     }
 }

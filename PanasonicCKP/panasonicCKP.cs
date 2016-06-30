@@ -12,7 +12,7 @@ using Android.Widget;
 //using System.Diagnostics;
 using System.Collections.ObjectModel;
 
-namespace remoteir
+namespace PanasonicCKP
 {
     public class panasonicCKP
     {
