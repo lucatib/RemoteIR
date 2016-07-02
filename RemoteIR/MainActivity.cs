@@ -24,7 +24,8 @@ namespace remoteir
         ISharedPreferences prefs;
 
         int glbl_temperature;
-        
+        byte glbl_mode;
+
 #if false
         private Java.Lang.Object irService;
         private Method readIR;
@@ -41,6 +42,9 @@ namespace remoteir
             prefs = PreferenceManager.GetDefaultSharedPreferences(this.ApplicationContext);
             
             glbl_temperature = prefs.GetInt("TEMPERATURE", 20);
+            glbl_mode = (byte)prefs.GetInt("MODE", 0x06);
+
+            FindViewById<TextView>(Resource.Id.editTemp).SetText(FormatTemp(glbl_temperature), TextView.BufferType.Normal);
             //....
 #if false
             irService = GetSystemService("irda");
@@ -54,6 +58,7 @@ namespace remoteir
         {
             ISharedPreferencesEditor editor = prefs.Edit();
             editor.PutInt("TEMPERATURE", glbl_temperature);
+            editor.PutInt("MODE", glbl_mode);
             //....
             editor.Apply();
             base.OnDestroy();
@@ -92,8 +97,6 @@ namespace remoteir
                 new panasonicCKP().ShortCommand(0x80, 0x30, ref marray);
             }
 
-            //Temperature ("TEMP   " + ((int)(bytes[0] & 0x0F) + 15)) 
-            //new panasonicCKP().LongCommand(0x00, 0x06|0x08, 0x00 , 0x36, ref marray);   //Auto
             if (marray != null)
             {
                 mCIR.Transmit(carrier_freq, marray);
@@ -113,7 +116,7 @@ namespace remoteir
             {
                 glbl_temperature++;
                 FindViewById<TextView>(Resource.Id.editTemp).SetText(FormatTemp(glbl_temperature), TextView.BufferType.Normal);
-                new panasonicCKP().LongCommand((byte)(15 - glbl_temperature), 0x08, 0x00, 0x36, ref marray);   //Auto
+                new panasonicCKP().LongCommand((byte)(15 - glbl_temperature), (byte)(glbl_mode | 0x08), 0x00, 0x36, ref marray);   //Auto
                 mCIR.Transmit(carrier_freq, marray);
             }
         }
@@ -125,7 +128,7 @@ namespace remoteir
             {
                 glbl_temperature--; 
                 FindViewById<TextView>(Resource.Id.editTemp).SetText(FormatTemp(glbl_temperature), TextView.BufferType.Normal);
-                new panasonicCKP().LongCommand((byte)(15 - glbl_temperature), 0x08, 0x00, 0x36, ref marray);
+                new panasonicCKP().LongCommand((byte)(15 - glbl_temperature), (byte)(glbl_mode | 0x08), 0x00, 0x36, ref marray);
                 mCIR.Transmit(carrier_freq, marray);
             }
         }
