@@ -80,6 +80,7 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Properties\AndroidManifest.xml" />
+    <AndroidResource Include="Resources\layout\spinnerItem.xml" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\PanasonicCKP\PanasonicCKP.csproj">

@@ -43,8 +43,30 @@ namespace remoteir
             
             glbl_temperature = prefs.GetInt("TEMPERATURE", 20);
             glbl_mode = (byte)prefs.GetInt("MODE", 0x06);
-
+            //
             FindViewById<TextView>(Resource.Id.editTemp).SetText(FormatTemp(glbl_temperature), TextView.BufferType.Normal);
+            //
+            Spinner spinner = FindViewById<Spinner>(Resource.Id.spinnerMode);
+            spinner.ItemSelected += new EventHandler<AdapterView.ItemSelectedEventArgs>(spinner_ItemSelected);
+            var adapter = ArrayAdapter.CreateFromResource(this, Resource.Array.modes_array, Resource.Layout.spinnerItem);
+            adapter.SetDropDownViewResource(Android.Resource.Layout.SimpleSpinnerDropDownItem);
+            spinner.Adapter = adapter;
+            if (glbl_mode == 0x01){
+                spinner.SetSelection(0);    //< item > FAN </ item >
+            }
+            else if (glbl_mode == 0x02){
+                spinner.SetSelection(1);   // < item > COOL </ item >
+            }
+            else if (glbl_mode == 0x03){
+                spinner.SetSelection(2);   // < item > DRY </ item >
+            }
+            else if (glbl_mode == 0x04){
+                spinner.SetSelection(3);   // < item > HEAT </ item >
+            }
+            else if (glbl_mode == 0x06){
+                spinner.SetSelection(4);   // < item > AUTO </ item >
+            }
+
             //....
 #if false
             irService = GetSystemService("irda");
@@ -52,6 +74,33 @@ namespace remoteir
             sendIR = irService.Class.GetMethod("write_irsend", Java.Lang.Class.FromType(typeof(Java.Lang.String)));
             sendIR.Invoke(irService, new Java.Lang.Object[] );
 #endif
+        }
+
+        private void spinner_ItemSelected(object sender, AdapterView.ItemSelectedEventArgs e)
+        {
+            int[] marray = null;
+            //Spinner spinner = (Spinner)sender;
+            //spinner.GetItemAtPosition()
+            if (e.Position == 0) {
+                glbl_mode = 0x01;   //< item > FAN </ item >
+            }
+            else if (e.Position == 1) {
+                glbl_mode = 0x02;   // < item > COOL </ item >
+            }
+            else if (e.Position == 2)
+            {
+                glbl_mode = 0x03;   // < item > DRY </ item >
+            }
+            else if (e.Position == 3)
+            {
+                glbl_mode = 0x04;   // < item > HEAT </ item >
+            }
+            else if (e.Position == 4)
+            {
+                glbl_mode = 0x06;   // < item > AUTO </ item >
+            }
+            new panasonicCKP().LongCommand((byte)(15 - glbl_temperature), (byte)(glbl_mode | 0x08), 0x00, 0x36, ref marray);
+            mCIR.Transmit(carrier_freq, marray);
         }
 
         protected override void OnDestroy()
@@ -116,9 +165,9 @@ namespace remoteir
             {
                 glbl_temperature++;
                 FindViewById<TextView>(Resource.Id.editTemp).SetText(FormatTemp(glbl_temperature), TextView.BufferType.Normal);
-                new panasonicCKP().LongCommand((byte)(15 - glbl_temperature), (byte)(glbl_mode | 0x08), 0x00, 0x36, ref marray);   //Auto
-                mCIR.Transmit(carrier_freq, marray);
             }
+            new panasonicCKP().LongCommand((byte)(15 - glbl_temperature), (byte)(glbl_mode | 0x08), 0x00, 0x36, ref marray);   //Auto
+            mCIR.Transmit(carrier_freq, marray);
         }
         [Export("TDown")]
         public void TDown(View v)
@@ -128,9 +177,9 @@ namespace remoteir
             {
                 glbl_temperature--; 
                 FindViewById<TextView>(Resource.Id.editTemp).SetText(FormatTemp(glbl_temperature), TextView.BufferType.Normal);
-                new panasonicCKP().LongCommand((byte)(15 - glbl_temperature), (byte)(glbl_mode | 0x08), 0x00, 0x36, ref marray);
-                mCIR.Transmit(carrier_freq, marray);
             }
+            new panasonicCKP().LongCommand((byte)(15 - glbl_temperature), (byte)(glbl_mode | 0x08), 0x00, 0x36, ref marray);   //Auto
+            mCIR.Transmit(carrier_freq, marray);
         }
         #endregion
     }

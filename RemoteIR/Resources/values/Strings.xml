@@ -1,5 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="Hello">Hello World, Click Me!</string>
     <string name="ApplicationName">remoteir</string>
+
+  <string-array name="modes_array">
+    <item>FAN</item>
+    <item>COOL</item>
+    <item>DRY</item>
+    <item>HEAT</item>
+    <item>AUTO</item>
+  </string-array>
+  
 </resources>
+
+

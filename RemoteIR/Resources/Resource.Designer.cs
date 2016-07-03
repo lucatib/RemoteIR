@@ -30,6 +30,22 @@ namespace remoteir
 			global::PanasonicCKP.Resource.String.Hello = global::remoteir.Resource.String.Hello;
 		}
 		
+		public partial class Array
+		{
+			
+			// aapt resource value: 0x7f050000
+			public const int modes_array = 2131034112;
+			
+			static Array()
+			{
+				global::Android.Runtime.ResourceIdManager.UpdateIdValues();
+			}
+			
+			private Array()
+			{
+			}
+		}
+		
 		public partial class Attribute
 		{
 			
@@ -62,26 +78,26 @@ namespace remoteir
 		public partial class Id
 		{
 			
-			// aapt resource value: 0x7f050006
-			public const int MyButton = 2131034118;
+			// aapt resource value: 0x7f060006
+			public const int MyButton = 2131099654;
 			
-			// aapt resource value: 0x7f050004
-			public const int button1 = 2131034116;
+			// aapt resource value: 0x7f060004
+			public const int button1 = 2131099652;
 			
-			// aapt resource value: 0x7f050003
-			public const int button2 = 2131034115;
+			// aapt resource value: 0x7f060003
+			public const int button2 = 2131099651;
 			
-			// aapt resource value: 0x7f050002
-			public const int editTemp = 2131034114;
+			// aapt resource value: 0x7f060002
+			public const int editTemp = 2131099650;
 			
-			// aapt resource value: 0x7f050000
-			public const int frameLayout1 = 2131034112;
+			// aapt resource value: 0x7f060000
+			public const int frameLayout1 = 2131099648;
 			
-			// aapt resource value: 0x7f050001
-			public const int gridLayout1 = 2131034113;
+			// aapt resource value: 0x7f060001
+			public const int gridLayout1 = 2131099649;
 			
-			// aapt resource value: 0x7f050005
-			public const int spinnerMode = 2131034117;
+			// aapt resource value: 0x7f060005
+			public const int spinnerMode = 2131099653;
 			
 			static Id()
 			{
@@ -98,6 +114,9 @@ namespace remoteir
 			
 			// aapt resource value: 0x7f030000
 			public const int Main = 2130903040;
+			
+			// aapt resource value: 0x7f030001
+			public const int spinnerItem = 2130903041;
 			
 			static Layout()
 			{
