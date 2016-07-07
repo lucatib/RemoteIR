@@ -65,6 +65,9 @@ namespace remoteir
 			// aapt resource value: 0x7f020000
 			public const int Icon = 2130837504;
 			
+			// aapt resource value: 0x7f020001
+			public const int power_off = 2130837505;
+			
 			static Drawable()
 			{
 				global::Android.Runtime.ResourceIdManager.UpdateIdValues();
@@ -95,6 +98,9 @@ namespace remoteir
 			
 			// aapt resource value: 0x7f060001
 			public const int gridLayout1 = 2131099649;
+			
+			// aapt resource value: 0x7f060007
+			public const int imageButton1 = 2131099655;
 			
 			// aapt resource value: 0x7f060005
 			public const int spinnerMode = 2131099653;

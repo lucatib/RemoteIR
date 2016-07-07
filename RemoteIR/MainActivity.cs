@@ -20,7 +20,7 @@ namespace remoteir
     {
         private const int carrier_freq = 38000;
 
-        ConsumerIrManager mCIR;
+        ConsumerIrManager mCIR = null;
         ISharedPreferences prefs;
 
         int glbl_temperature;
@@ -34,11 +34,13 @@ namespace remoteir
         protected override void OnCreate(Bundle bundle)
         {
             base.OnCreate(bundle);
-
+            ActionBar.Hide();   //Not necessary in home screen
             // Set our view from the "main" layout resource
             SetContentView(Resource.Layout.Main);
 
-            mCIR = (ConsumerIrManager)GetSystemService(Context.ConsumerIrService);
+            if (mCIR==null)
+                mCIR = (ConsumerIrManager)GetSystemService(Context.ConsumerIrService);
+
             prefs = PreferenceManager.GetDefaultSharedPreferences(this.ApplicationContext);
             
             glbl_temperature = prefs.GetInt("TEMPERATURE", 20);
@@ -47,7 +49,6 @@ namespace remoteir
             FindViewById<TextView>(Resource.Id.editTemp).SetText(FormatTemp(glbl_temperature), TextView.BufferType.Normal);
             //
             Spinner spinner = FindViewById<Spinner>(Resource.Id.spinnerMode);
-            spinner.ItemSelected += new EventHandler<AdapterView.ItemSelectedEventArgs>(spinner_ItemSelected);
             var adapter = ArrayAdapter.CreateFromResource(this, Resource.Array.modes_array, Resource.Layout.spinnerItem);
             adapter.SetDropDownViewResource(Android.Resource.Layout.SimpleSpinnerDropDownItem);
             spinner.Adapter = adapter;
@@ -66,6 +67,9 @@ namespace remoteir
             else if (glbl_mode == 0x06){
                 spinner.SetSelection(4);   // < item > AUTO </ item >
             }
+
+            //Map event after changes
+            spinner.ItemSelected += new EventHandler<AdapterView.ItemSelectedEventArgs>(spinner_ItemSelected);
 
             //....
 #if false
@@ -110,7 +114,11 @@ namespace remoteir
             editor.PutInt("MODE", glbl_mode);
             //....
             editor.Apply();
-            base.OnDestroy();
+
+            if (mCIR != null)
+                mCIR.Dispose();
+
+             base.OnDestroy();
         }
 
         [Export("HandleClick")]
@@ -152,6 +160,11 @@ namespace remoteir
             }
         }
 
+        [Export("ShutDown")]
+        public void ShutDown(View v) {
+            this.Finish();
+        }
+        
         #region TEMP
         private string FormatTemp(int mvalue) {
             return string.Format(CultureInfo.InvariantCulture, "{0:D2}°C", mvalue) ;

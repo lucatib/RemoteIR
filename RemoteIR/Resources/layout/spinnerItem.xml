@@ -3,6 +3,6 @@
     android:id="@android:id/text1"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:textSize="60dp"
+    android:textSize="40dp"
     />
  <!--android:textColor="#ff0000"--> 
