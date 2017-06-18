@@ -58,6 +58,7 @@
     <AndroidEnableMultiDex>False</AndroidEnableMultiDex>
     <EnableProguard>False</EnableProguard>
     <DebugSymbols>False</DebugSymbols>
+    <AndroidSupportedAbis />
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Mono.Android" />

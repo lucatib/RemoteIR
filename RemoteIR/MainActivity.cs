@@ -23,6 +23,8 @@ namespace remoteir
         ConsumerIrManager mCIR = null;
         ISharedPreferences prefs;
 
+        bool spinner_firsttime = true;
+
         int glbl_temperature;
         byte glbl_mode;
 
@@ -38,9 +40,9 @@ namespace remoteir
             // Set our view from the "main" layout resource
             SetContentView(Resource.Layout.Main);
 
-            if (mCIR==null)
+            if (mCIR == null){
                 mCIR = (ConsumerIrManager)GetSystemService(Context.ConsumerIrService);
-
+            }
             prefs = PreferenceManager.GetDefaultSharedPreferences(this.ApplicationContext);
             
             glbl_temperature = prefs.GetInt("TEMPERATURE", 20);
@@ -52,6 +54,8 @@ namespace remoteir
             var adapter = ArrayAdapter.CreateFromResource(this, Resource.Array.modes_array, Resource.Layout.spinnerItem);
             adapter.SetDropDownViewResource(Android.Resource.Layout.SimpleSpinnerDropDownItem);
             spinner.Adapter = adapter;
+            spinner.ItemSelected += new EventHandler<AdapterView.ItemSelectedEventArgs>(spinner_ItemSelected);
+
             if (glbl_mode == 0x01){
                 spinner.SetSelection(0);    //< item > FAN </ item >
             }
@@ -68,9 +72,6 @@ namespace remoteir
                 spinner.SetSelection(4);   // < item > AUTO </ item >
             }
 
-            //Map event after changes
-            spinner.ItemSelected += new EventHandler<AdapterView.ItemSelectedEventArgs>(spinner_ItemSelected);
-
             //....
 #if false
             irService = GetSystemService("irda");
@@ -82,7 +83,11 @@ namespace remoteir
 
         private void spinner_ItemSelected(object sender, AdapterView.ItemSelectedEventArgs e)
         {
-            int[] marray = null;
+            if (spinner_firsttime) {
+                spinner_firsttime = false;
+                return;
+            }
+
             //Spinner spinner = (Spinner)sender;
             //spinner.GetItemAtPosition()
             if (e.Position == 0) {
@@ -103,8 +108,11 @@ namespace remoteir
             {
                 glbl_mode = 0x06;   // < item > AUTO </ item >
             }
+            int[] marray = null;
             new panasonicCKP().LongCommand((byte)(15 - glbl_temperature), (byte)(glbl_mode | 0x08), 0x00, 0x36, ref marray);
             mCIR.Transmit(carrier_freq, marray);
+            mCIR.Transmit(carrier_freq, marray);
+
         }
 
         protected override void OnDestroy()
@@ -157,6 +165,7 @@ namespace remoteir
             if (marray != null)
             {
                 mCIR.Transmit(carrier_freq, marray);
+                mCIR.Transmit(carrier_freq, marray);
             }
         }
 
@@ -181,6 +190,7 @@ namespace remoteir
             }
             new panasonicCKP().LongCommand((byte)(15 - glbl_temperature), (byte)(glbl_mode | 0x08), 0x00, 0x36, ref marray);   //Auto
             mCIR.Transmit(carrier_freq, marray);
+            mCIR.Transmit(carrier_freq, marray);
         }
         [Export("TDown")]
         public void TDown(View v)
@@ -192,6 +202,7 @@ namespace remoteir
                 FindViewById<TextView>(Resource.Id.editTemp).SetText(FormatTemp(glbl_temperature), TextView.BufferType.Normal);
             }
             new panasonicCKP().LongCommand((byte)(15 - glbl_temperature), (byte)(glbl_mode | 0x08), 0x00, 0x36, ref marray);   //Auto
+            mCIR.Transmit(carrier_freq, marray);
             mCIR.Transmit(carrier_freq, marray);
         }
         #endregion
