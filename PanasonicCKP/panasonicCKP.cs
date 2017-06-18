@@ -322,7 +322,7 @@ namespace PanasonicCKP
 
         private void AppendByte(byte inbyte, ref Collection<int> mcommand)
         {
-            byte mask = 0x80;
+            byte mask;
             for (int i = 0; i < 8; i++)
             {
                 mask = (byte)(0x01 << i);  //lsb first
@@ -335,7 +335,6 @@ namespace PanasonicCKP
                 {
                     mcommand.Add(usec_toffzero);
                 }
-                mask >>= 1;
             }
         }
 
@@ -377,7 +376,6 @@ namespace PanasonicCKP
                 AppendByte(b1, ref mcoll);
                 AppendByte(b2, ref mcoll);
                 AppendByte(b2, ref mcoll);
-
             }
 
             AppendFoooter(ref mcoll);
@@ -389,6 +387,7 @@ namespace PanasonicCKP
             {
                 Collection<int> mcoll = new Collection<int>();
                 LongCommand(b1, b2, b3, b4, ref mcoll);
+                LongCommand(b1, b2, b3, b4, ref mcoll); //duplicate command
                 marray = mcoll.ToArray<int>();
                 return true;
             }
@@ -404,6 +403,7 @@ namespace PanasonicCKP
             {
                 Collection<int> mcoll = new Collection<int>();
                 ShortCommand(b1, b2, ref mcoll);
+                ShortCommand(b1, b2, ref mcoll);    //duplicate command
                 marray = mcoll.ToArray<int>();
                 return true;
             }

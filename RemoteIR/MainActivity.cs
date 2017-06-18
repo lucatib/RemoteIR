@@ -111,8 +111,6 @@ namespace remoteir
             int[] marray = null;
             new panasonicCKP().LongCommand((byte)(15 - glbl_temperature), (byte)(glbl_mode | 0x08), 0x00, 0x36, ref marray);
             mCIR.Transmit(carrier_freq, marray);
-            mCIR.Transmit(carrier_freq, marray);
-
         }
 
         protected override void OnDestroy()
@@ -165,7 +163,6 @@ namespace remoteir
             if (marray != null)
             {
                 mCIR.Transmit(carrier_freq, marray);
-                mCIR.Transmit(carrier_freq, marray);
             }
         }
 
@@ -190,7 +187,6 @@ namespace remoteir
             }
             new panasonicCKP().LongCommand((byte)(15 - glbl_temperature), (byte)(glbl_mode | 0x08), 0x00, 0x36, ref marray);   //Auto
             mCIR.Transmit(carrier_freq, marray);
-            mCIR.Transmit(carrier_freq, marray);
         }
         [Export("TDown")]
         public void TDown(View v)
@@ -202,7 +198,6 @@ namespace remoteir
                 FindViewById<TextView>(Resource.Id.editTemp).SetText(FormatTemp(glbl_temperature), TextView.BufferType.Normal);
             }
             new panasonicCKP().LongCommand((byte)(15 - glbl_temperature), (byte)(glbl_mode | 0x08), 0x00, 0x36, ref marray);   //Auto
-            mCIR.Transmit(carrier_freq, marray);
             mCIR.Transmit(carrier_freq, marray);
         }
         #endregion
